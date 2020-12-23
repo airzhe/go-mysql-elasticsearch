@@ -38,6 +38,7 @@ func loadMasterInfo(dataDir string) (*masterInfo, error) {
 		return nil, errors.Trace(err)
 	}
 
+	//打开文件
 	f, err := os.Open(m.filePath)
 	if err != nil && !os.IsNotExist(errors.Cause(err)) {
 		return nil, errors.Trace(err)
@@ -46,6 +47,7 @@ func loadMasterInfo(dataDir string) (*masterInfo, error) {
 	}
 	defer f.Close()
 
+	//读取文件内容到 m 结构体
 	_, err = toml.DecodeReader(f, &m)
 	return &m, errors.Trace(err)
 }
@@ -75,6 +77,7 @@ func (m *masterInfo) Save(pos mysql.Position) error {
 	e.Encode(m)
 
 	var err error
+	//使用临时文件形式保证写文件是原子性操作
 	if err = ioutil2.WriteFileAtomic(m.filePath, buf.Bytes(), 0644); err != nil {
 		log.Errorf("canal save master info to file %s err %v", m.filePath, err)
 	}
