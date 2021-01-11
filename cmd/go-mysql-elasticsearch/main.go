@@ -106,7 +106,7 @@ func main() {
 	//监听sc信号量channel，响应用户退出
 	case n := <-sc:
 		log.Infof("receive signal %v, closing", n)
-	//监听Contet的Done事件，响应程序内部的退出，目前看done事件在r.Close里执行,以及sync.go里有3处触发
+	//监听Context的Done事件，响应程序内部的退出，目前看done事件在r.Close里执行,以及sync.go里有3处触发
 	//1.errors.Errorf("make %s ES request err %v, close sync", e.Action, err)
 	//2.log.Errorf("do ES bulk err %v, close sync", err)
 	//3.log.Errorf("save sync position %s err %v, close sync", pos, err)
